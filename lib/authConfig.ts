@@ -6,7 +6,7 @@ export interface NSession extends Session{
   id:string | undefined
 }
 const authConfig : AuthOptions = {
-    secret:process.env.NEXT_SECRET,
+    secret:process.env.NEXTAUTH_SECRET,
     providers: [
         CredentialsProvider({
           // The name to display on the sign in form (e.g. 'Sign in with...')

@@ -15,5 +15,8 @@ export default withAuth(
  
 // See "Matching Paths" below to learn more
 export const config = {
-  matcher: '/app/:path*',
+  matcher: [
+    '/app/:path*',
+    "/api/:path*"
+  ],
 }
