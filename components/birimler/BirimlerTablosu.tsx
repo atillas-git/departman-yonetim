@@ -9,15 +9,35 @@ import {
     TableHeader,
     TableRow,
   } from "@/components/ui/table"
+import {
+    Dialog,
+    DialogClose,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+  } from "@/components/ui/dialog"
 import { Birim } from '@prisma/client'
 import { Button } from '../ui/button'
 import Pagination from '../ui/pagination'
 interface IProps  {
     birimler : Birim []
     sayfaSayisi : number
-    setSeciliBirim:React.Dispatch<any>
+    setSeciliBirim:React.Dispatch<any>,
+    birimAra:() => Promise<void>
 }
-const BirimlerTablosu = ({birimler,sayfaSayisi,setSeciliBirim}:IProps) => {
+const BirimlerTablosu = ({birimler,sayfaSayisi,setSeciliBirim,birimAra}:IProps) => {
+    const handleBirimSil = async (birimId:string)=>{
+        const res = await fetch("/api/birimler",{
+            method:"DELETE",
+            body:JSON.stringify({
+                id:birimId
+            })
+        })
+        await birimAra()
+    }
     return (
         <div className='w-full'>
             <Table className='w-full'>
@@ -41,7 +61,24 @@ const BirimlerTablosu = ({birimler,sayfaSayisi,setSeciliBirim}:IProps) => {
                                 <TableCell>{birim.birimSorumlusuId}</TableCell>
                                 <TableCell className='gap-2 flex'>
                                     <Button onClick={()=>setSeciliBirim(birim)}>Düzenle</Button>
-                                    <Button variant={'outline'}>Sil</Button>
+                                    <Dialog>
+                                        <DialogTrigger asChild>
+                                            <Button variant={'outline'}>Sil</Button>
+                                        </DialogTrigger>
+                                        <DialogContent>
+                                            <DialogHeader>
+                                                <DialogTitle>
+                                                    Silmek istediğinize emin misiniz?
+                                                </DialogTitle>
+                                                <DialogDescription>Seçili birimi silmek istiyorsanız hiçbir çalışanın bu birime bağlı olmadığına emin olun.</DialogDescription>
+                                            </DialogHeader>
+                                            <DialogFooter>
+                                                <DialogClose>
+                                                    <Button onClick={()=>handleBirimSil(birim.id)}>Sil</Button>
+                                                </DialogClose>
+                                            </DialogFooter>
+                                        </DialogContent>
+                                    </Dialog>
                                 </TableCell>
                             </TableRow>
                         )

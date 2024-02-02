@@ -63,6 +63,7 @@ const BirimlerSayfası = ({birimler,sayfaSayisi}:IProps) => {
             birimler={birimlerListesi} 
             sayfaSayisi={sayfa} 
             setSeciliBirim={setSeciliBirim}
+            birimAra = {birimAra}
         />
     </div>
   )

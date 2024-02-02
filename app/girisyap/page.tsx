@@ -21,7 +21,7 @@ const GirisYap = () => {
             signIn("credentials",{
                 email:email,
                 parola:parola,
-                callbackUrl:"/"
+                callbackUrl:"/app"
             })
         } catch (error) {
             console.log(error)

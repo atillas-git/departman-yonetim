@@ -20,7 +20,7 @@ export async function POST(request:Request) {
                 id:body.birimSorumlusuId
             }
         })
-        
+
         if(!birimSorumlusu){
             return new Response("Yanlış birim sorumlusu!",{
                 status:400
@@ -88,6 +88,28 @@ export async function PUT(request:Request) {
         })
         revalidatePath("/birimler")
         return new Response(JSON.stringify(birim),{
+            status:200
+        })
+    } catch (error) {
+        console.log(error)
+        return new Response(JSON.stringify(error),{
+            status:500
+        })
+    }
+}
+
+export async function DELETE(request:Request) {
+    try {
+        type Body = {
+            id:string,  
+        }
+        const body : Body = await request.json()
+        const deleted = await prisma.birim.delete({
+            where:{
+                id:body.id
+            }
+        })
+        return new Response(JSON.stringify(deleted),{
             status:200
         })
     } catch (error) {

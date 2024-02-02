@@ -14,9 +14,11 @@ const Layout = ({children}:{children:React.ReactNode}) => {
     <div>
         <div className='grid grid-cols-7'>
             <div className='col-span-1 min-h-screen bg-zinc-900 p-4 flex flex-col gap-2'>
-                <div className='p-4 text-zinc-50 font-semibold text-lg border-b border-zinc-50  '>
-                    <p>DeptConnect</p>
-                </div>
+                <Link href={"/app"}>                
+                    <div className='p-4 text-zinc-50 font-semibold text-lg border-b border-zinc-50  '>
+                        <p>DeptConnect</p>
+                    </div>
+                </Link>
                 <div className='w-full flex text-zinc-50 p-2 rounded-md 
                     transition hover:bg-zinc-700 cursor-pointer gap-2 items-center'>
                     <ShoppingBasket className='w-5 h-5'/>
