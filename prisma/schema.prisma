@@ -1,0 +1,56 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model Calisan{
+  id  String    @id @default(auto()) @map("_id") @db.ObjectId
+  email String @unique
+  kullaniciAdi String
+  parola String?
+  alimlar Alim []
+  sorumluBirimler Birim []
+}
+
+model Alim{
+    id  String   @id @default(auto()) @map("_id") @db.ObjectId
+    isim String
+    aciklama String
+    kullanici String
+    tarafindan Calisan @relation(fields: [tarafindanId],references: [id])
+    tarafindanId String @db.ObjectId
+    talepEdenBirimAdi String
+    talepEdenBirim Birim @relation("TalepEdenBirim",fields: [talepEdenBirimId], references: [id])
+    talepEdenBirimId String @db.ObjectId 
+    malzemeIDs String [] @db.ObjectId
+    malzemeler Malzeme [] @relation(fields: [malzemeIDs],references: [id])
+    talepTarihi DateTime
+    onayTarihi DateTime
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
+model Birim{
+    id  String   @id @default(auto()) @map("_id") @db.ObjectId
+    birimAdi String 
+    birimSorumlusu Calisan @relation(fields: [birimSorumlusuId],references: [id])
+    birimSorumlusuId String @db.ObjectId
+    talepEdilenAlimlar Alim [] @relation("TalepEdenBirim")
+}
+
+model Malzeme {
+    id  String   @id @default(auto()) @map("_id") @db.ObjectId
+    malzemeAdi String
+    fiyat Float
+    tutar Float
+    aciklama String?
+    alimlarIDs String [] @db.ObjectId
+    alimlar Alim [] @relation(fields: [alimlarIDs],references: [id])
+}
